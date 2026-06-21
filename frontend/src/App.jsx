@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Components from "./pages/Components";
+import ListView from "./pages/ListView";
+import AIFeature from "./pages/AIFeature";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -39,6 +41,24 @@ function App() {
             path="/components"
             element={<Components darkMode={darkMode} setDarkMode={setDarkMode} />}
           />
+          <Route
+            path="/listview"
+            element={
+          <ListView
+                  darkMode={darkMode}
+              setDarkMode={setDarkMode}
+    />
+  }
+/>
+<Route
+  path="/aifeature"
+  element={
+    <AIFeature
+      darkMode={darkMode}
+      setDarkMode={setDarkMode}
+    />
+  }
+/>
         </Routes>
       </BrowserRouter>
     </div>

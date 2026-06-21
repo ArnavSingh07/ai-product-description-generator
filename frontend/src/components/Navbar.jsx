@@ -15,6 +15,8 @@ export default function Navbar({ darkMode, setDarkMode }) {
           <Link to="/login">Login</Link>
           <Link to="/signup">Signup</Link>
           <Link to="/components">Components</Link>
+          <Link to="/listview">List View</Link>
+          <Link to="/aifeature">AI Feature</Link>
 
           <button
   onClick={() => {
