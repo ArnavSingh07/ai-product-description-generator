@@ -1,10 +1,16 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-export default function Signup() {
+export default function Signup({
+  darkMode,
+  setDarkMode,
+}) {
   return (
     <>
-      <Navbar />
+      <Navbar
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
 
       <main className="max-w-md mx-auto p-6 my-10">
         <div className="bg-white shadow-lg rounded-xl p-6 border">

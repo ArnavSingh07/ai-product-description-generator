@@ -3,10 +3,16 @@ import Hero from "../components/Hero";
 import Card from "../components/Card";
 import Footer from "../components/Footer";
 
-export default function Home() {
+export default function Home({
+  darkMode,
+  setDarkMode,
+}) {
   return (
     <>
-      <Navbar />
+      <Navbar
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
 
       <Hero />
 
