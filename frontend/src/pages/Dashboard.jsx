@@ -22,10 +22,15 @@ export default function Dashboard({
         <h1 className="text-3xl font-bold mb-6">
           Dashboard
         </h1>
-
         <p className="mb-8">
-          Manage and view AI-generated product descriptions.
-        </p>
+  Manage and view AI-generated product descriptions.
+</p>
+
+<input
+  type="text"
+  placeholder="Search descriptions..."
+  className="border p-2 rounded w-full mb-6"
+/>
 
         <div className="grid md:grid-cols-3 gap-6">
 
@@ -41,8 +46,12 @@ export default function Dashboard({
             </h2>
 
             <p>
-              Premium product description for organic mango pickle.
-            </p>
+  Premium product description for organic mango pickle.
+</p>
+
+<button className="mt-3 bg-gray-700 text-white px-3 py-1 rounded">
+  View Details
+</button>
           </div>
 
           <div
@@ -57,8 +66,12 @@ export default function Dashboard({
             </h2>
 
             <p>
-              SEO-friendly description for packaged spices.
-            </p>
+  SEO-friendly description for packaged spices.
+</p>
+
+<button className="mt-3 bg-gray-700 text-white px-3 py-1 rounded">
+  View Details
+</button>
           </div>
 
           <div
@@ -73,8 +86,12 @@ export default function Dashboard({
             </h2>
 
             <p>
-              Marketplace-ready content for millet snacks.
-            </p>
+  Marketplace-ready content for millet snacks.
+</p>
+
+<button className="mt-3 bg-gray-700 text-white px-3 py-1 rounded">
+  View Details
+</button>
           </div>
 
         </div>

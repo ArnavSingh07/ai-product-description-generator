@@ -5,9 +5,13 @@ export default function Hero() {
         AI-Powered E-Commerce Product Description Generator
       </h1>
 
-      <p className="mt-4 text-gray-600">
-        Generate SEO-friendly product descriptions for food processing MSMEs.
-      </p>
+      <p>
+  Generate SEO-friendly product descriptions for food processing MSMEs.
+</p>
+
+<button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg">
+  Generate Description
+</button>
     </section>
   );
 }
