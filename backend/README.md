@@ -1,5 +1,33 @@
-# Backend
+# AI Product Description Generator Backend
 
-Node.js and Express.js backend for the AI-Powered E-Commerce Product Description Generator for Food Processing MSMEs.
+## How to run backend locally
 
-Setup coming soon.
+1. Open a terminal
+
+```bash
+cd backend
+```
+
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Create a `.env` file
+
+```env
+PORT=5000
+```
+
+4. Start the server
+
+```bash
+npm run dev
+```
+
+5. Open
+
+```
+http://localhost:5000
+```
