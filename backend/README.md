@@ -35,19 +35,19 @@ PORT=5000
 npm run dev
 ```
 
-### 5. Open the backend in your browser
+### 5. Open the backend
 
 ```
 http://localhost:5000
 ```
 
-## Available API Endpoints
+## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/products` | Get all products |
 | GET | `/api/products/:id` | Get a product by ID |
-| POST | `/api/products` | Create a new product |
+| POST | `/api/products` | Create a product |
 | PUT | `/api/products/:id` | Update a product |
 | DELETE | `/api/products/:id` | Delete a product |
 | GET | `/api/products/search?q=keyword` | Search products |
