@@ -1,17 +1,22 @@
+import { Link } from "react-router-dom";
+
 export default function Hero() {
   return (
-    <section className="text-center py-16 px-4">
-      <h1 className="text-4xl font-bold">
-        AI-Powered E-Commerce Product Description Generator
+    <section className="max-w-6xl mx-auto px-6 py-20 text-center">
+      <h1 className="text-5xl font-bold mb-4">
+        AI Product Description Generator
       </h1>
 
-      <p>
-  Generate SEO-friendly product descriptions for food processing MSMEs.
-</p>
+      <p className="text-lg text-gray-600 mb-8">
+        Generate professional product descriptions for food processing MSMEs using AI.
+      </p>
 
-<button className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg">
-  Generate Description
-</button>
+      <Link
+        to="/aifeature"
+        className="bg-green-600 text-white px-6 py-3 rounded"
+      >
+        Get Started
+      </Link>
     </section>
   );
 }
