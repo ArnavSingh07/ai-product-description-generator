@@ -1,23 +1,118 @@
-# AI-Powered E-Commerce Product Description Generator for Food Processing MSMEs
+# AI Product Description Generator
 
-An AI-powered web application that generates SEO-friendly and marketplace-ready product descriptions for food-processing businesses.
+A full-stack web application that helps Food Processing MSMEs generate and manage product descriptions. The project includes a React frontend and an Express.js backend with REST APIs.
+
+---
 
 ## Tech Stack
 
-- Frontend: React.js
-- Styling: Tailwind CSS
-- Backend: Node.js + Express.js
-- Database: MongoDB Atlas
-- AI: Google Gemini API
+### Frontend
+- React.js
+- Vite
+- Tailwind CSS
+- React Router DOM
 
-## Core Features
+### Backend
+- Node.js
+- Express.js
+- CORS
+- Dotenv
 
-- Product Information Input
-- Tone Selection
-- AI Description Generation
-- Regenerate & Edit Output
-- Copy Generated Content
+---
 
-## Setup
+## Features
 
-Coming soon...
+- Product List View
+- Search Products
+- RESTful CRUD APIs
+- Frontend connected to Backend
+- API Testing using Postman
+- Error Handling Middleware
+- Responsive UI
+
+---
+
+## Project Structure
+
+```
+ai-product-description-generator/
+│
+├── frontend/
+│
+├── backend/
+│   ├── controllers/
+│   ├── routes/
+│   ├── middleware/
+│   ├── data/
+│   ├── server.js
+│   ├── package.json
+│   ├── .env.example
+│   └── README.md
+│
+└── README.md
+```
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/products` | Get all products |
+| GET | `/api/products/:id` | Get product by ID |
+| POST | `/api/products` | Create product |
+| PUT | `/api/products/:id` | Update product |
+| DELETE | `/api/products/:id` | Delete product |
+| GET | `/api/products/search?q=keyword` | Search products |
+
+---
+
+## Running the Project
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Runs on:
+
+```
+http://localhost:5000
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Runs on:
+
+```
+http://localhost:5173
+```
+
+---
+
+## Week 4 Progress
+
+- Express.js Backend
+- REST API Development
+- CRUD Operations
+- Search Endpoint
+- Frontend–Backend Integration
+- Postman API Testing
+- Error Handling Middleware
+
+---
+
+## Author
+
+**Arnav Singh**
+
+Graphic Era Deemed to be University
