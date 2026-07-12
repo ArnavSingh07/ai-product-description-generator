@@ -1,23 +1,46 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const connectDB = require("./config/db");
 
 dotenv.config();
-console.log("MONGO_URI:", process.env.MONGO_URI);
 
-// Connect to MongoDB
-connectDB();
+const connectDB = require("./config/db");
+
+const passport = require("passport");
+const session = require("express-session");
+
+require("./config/passport");
 
 const productRoutes = require("./routes/productRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 
+// Connect Database
+connectDB();
+
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
-// Health Check Route
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Health Check
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -25,8 +48,9 @@ app.get("/", (req, res) => {
   });
 });
 
-// Product Routes
+// Routes
 app.use("/api/products", productRoutes);
+app.use("/api/auth", authRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;

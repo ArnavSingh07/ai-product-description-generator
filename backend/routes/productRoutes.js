@@ -1,4 +1,5 @@
 const express = require("express");
+const verifyToken = require("../middleware/authMiddleware");
 
 const {
   getAllProducts,
@@ -11,6 +12,10 @@ const {
 
 const router = express.Router();
 
+// ==============================
+// Public Routes
+// ==============================
+
 // Search Products
 router.get("/search", searchProducts);
 
@@ -20,13 +25,17 @@ router.get("/", getAllProducts);
 // Get Single Product
 router.get("/:id", getProductById);
 
+// ==============================
+// Protected Routes
+// ==============================
+
 // Create Product
-router.post("/", createProduct);
+router.post("/", verifyToken, createProduct);
 
 // Update Product
-router.put("/:id", updateProduct);
+router.put("/:id", verifyToken, updateProduct);
 
 // Delete Product
-router.delete("/:id", deleteProduct);
+router.delete("/:id", verifyToken, deleteProduct);
 
 module.exports = router;
