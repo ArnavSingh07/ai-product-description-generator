@@ -26,78 +26,45 @@ function App() {
     >
       <BrowserRouter>
         <Routes>
-
-          {/* Home */}
           <Route
             path="/"
-            element={
-              <Home
-                darkMode={darkMode}
-                setDarkMode={setDarkMode}
-              />
-            }
+            element={<Home darkMode={darkMode} setDarkMode={setDarkMode} />}
           />
 
-          {/* About */}
           <Route
             path="/about"
-            element={
-              <About
-                darkMode={darkMode}
-                setDarkMode={setDarkMode}
-              />
-            }
+            element={<About darkMode={darkMode} setDarkMode={setDarkMode} />}
           />
 
-          {/* Login */}
           <Route
             path="/login"
-            element={
-              <Login
-                darkMode={darkMode}
-                setDarkMode={setDarkMode}
-              />
-            }
+            element={<Login darkMode={darkMode} setDarkMode={setDarkMode} />}
           />
 
-          {/* Signup */}
           <Route
             path="/signup"
-            element={
-              <Signup
-                darkMode={darkMode}
-                setDarkMode={setDarkMode}
-              />
-            }
+            element={<Signup darkMode={darkMode} setDarkMode={setDarkMode} />}
           />
 
-          {/* Components */}
           <Route
             path="/components"
             element={
-              <Components
-                darkMode={darkMode}
-                setDarkMode={setDarkMode}
-              />
+              <Components darkMode={darkMode} setDarkMode={setDarkMode} />
             }
           />
 
-          {/* AI Feature */}
           <Route
             path="/aifeature"
             element={
-              <AIFeature
-                darkMode={darkMode}
-                setDarkMode={setDarkMode}
-              />
+              <AIFeature darkMode={darkMode} setDarkMode={setDarkMode} />
             }
           />
-          <Route
-  path="/google-success"
-  element={<GoogleSuccess />}
-/>
 
-          {/* Protected Dashboard */}
+          <Route
+            path="/google-success"
+            element={<GoogleSuccess />}
+          />
+
           <Route
             path="/dashboard"
             element={
@@ -110,7 +77,6 @@ function App() {
             }
           />
 
-          {/* Protected ListView */}
           <Route
             path="/listview"
             element={
@@ -122,7 +88,6 @@ function App() {
               </ProtectedRoute>
             }
           />
-
         </Routes>
       </BrowserRouter>
     </div>

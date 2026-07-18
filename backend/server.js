@@ -1,18 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const session = require("express-session");
+const passport = require("passport");
 
 dotenv.config();
 
 const connectDB = require("./config/db");
-
-const passport = require("passport");
-const session = require("express-session");
-
 require("./config/passport");
 
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
@@ -40,9 +39,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Health Check
+// Health Check Route
 app.get("/", (req, res) => {
-  res.status(200).json({
+  res.json({
     success: true,
     message: "AI Product Description Generator Backend Running 🚀",
   });
@@ -51,6 +50,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/products", productRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;

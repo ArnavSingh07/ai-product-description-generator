@@ -33,14 +33,13 @@ export default function Login({ darkMode, setDarkMode }) {
       const data = await response.json();
 
       if (response.ok) {
-        // Save JWT Token
+        // Save JWT token
         localStorage.setItem("token", data.token);
 
-        // Save User
+        // Save logged-in user
         localStorage.setItem("user", JSON.stringify(data.user));
 
         alert("Login Successful!");
-
         navigate("/dashboard");
       } else {
         alert(data.message);
@@ -53,14 +52,10 @@ export default function Login({ darkMode, setDarkMode }) {
 
   return (
     <>
-      <Navbar
-        darkMode={darkMode}
-        setDarkMode={setDarkMode}
-      />
+      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
 
       <main className="max-w-md mx-auto p-6 my-10">
         <div className="bg-white shadow-lg rounded-xl p-6 border">
-
           <h1 className="text-3xl font-bold text-center mb-2">
             Welcome Back
           </h1>
@@ -70,7 +65,6 @@ export default function Login({ darkMode, setDarkMode }) {
           </p>
 
           <form onSubmit={handleLogin} className="space-y-4">
-
             <input
               type="email"
               name="email"
@@ -97,17 +91,14 @@ export default function Login({ darkMode, setDarkMode }) {
             >
               Login
             </button>
-
           </form>
 
-          {/* Divider */}
           <div className="flex items-center my-5">
             <div className="flex-1 border-t"></div>
             <span className="px-3 text-gray-500 text-sm">OR</span>
             <div className="flex-1 border-t"></div>
           </div>
 
-          {/* Google Login */}
           <button
             type="button"
             onClick={() => {
@@ -121,14 +112,10 @@ export default function Login({ darkMode, setDarkMode }) {
 
           <p className="text-center mt-5 text-sm">
             Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="text-blue-600 font-semibold"
-            >
+            <Link to="/signup" className="text-blue-600 font-semibold">
               Sign Up
             </Link>
           </p>
-
         </div>
       </main>
 

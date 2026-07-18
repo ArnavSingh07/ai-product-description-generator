@@ -9,12 +9,9 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "http://localhost:5000/api/auth/google/callback",
     },
-
     async (accessToken, refreshToken, profile, done) => {
       try {
-        const email = profile.emails[0].value;
-
-        // Find by Google ID
+        // Find user by Google ID
         let user = await User.findOne({
           googleId: profile.id,
         });
@@ -22,21 +19,21 @@ passport.use(
         // If not found, check by email
         if (!user) {
           user = await User.findOne({
-            email,
+            email: profile.emails[0].value,
           });
         }
 
-        // Create user if doesn't exist
+        // Create new user if not found
         if (!user) {
           user = await User.create({
             name: profile.displayName,
-            email,
+            email: profile.emails[0].value,
             password: "",
             googleId: profile.id,
           });
         }
 
-        // Link Google account to existing email account
+        // Link existing account with Google
         if (!user.googleId) {
           user.googleId = profile.id;
           await user.save();

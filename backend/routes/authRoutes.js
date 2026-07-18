@@ -16,11 +16,8 @@ const {
 
 const authLimiter = require("../middleware/rateLimiter");
 
-// =====================================
 // Email & Password Authentication
-// =====================================
 
-// Register
 router.post(
   "/register",
   authLimiter,
@@ -29,7 +26,6 @@ router.post(
   registerUser
 );
 
-// Login
 router.post(
   "/login",
   authLimiter,
@@ -38,11 +34,8 @@ router.post(
   loginUser
 );
 
-// =====================================
 // Google OAuth
-// =====================================
 
-// Redirect user to Google
 router.get(
   "/google",
   passport.authenticate("google", {
@@ -50,27 +43,12 @@ router.get(
   })
 );
 
-// Google Callback
 router.get(
   "/google/callback",
-
-  // Debug Step 1
-  (req, res, next) => {
-    console.log("✅ Google callback reached");
-    next();
-  },
-
   passport.authenticate("google", {
     failureRedirect: "http://localhost:5173/login",
     session: true,
   }),
-
-  // Debug Step 2
-  (req, res, next) => {
-    console.log("✅ Passport authentication successful");
-    next();
-  },
-
   googleSuccess
 );
 

@@ -1,41 +1,95 @@
 # AI Product Description Generator
 
-A full-stack web application that helps Food Processing MSMEs generate and manage AI-powered product descriptions. The application uses a React frontend, an Express.js backend, and MongoDB Atlas for persistent cloud storage.
+A full-stack AI-powered web application that helps Food Processing MSMEs generate professional product descriptions using **Google Gemini AI**. The application provides secure authentication, product management, and AI-powered content generation using a React frontend, Express.js backend, and MongoDB Atlas.
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-### Frontend
+## Frontend
+
 - React.js
 - Vite
 - Tailwind CSS
 - React Router DOM
 
-### Backend
+## Backend
+
 - Node.js
 - Express.js
 - MongoDB Atlas
 - Mongoose ODM
+- JWT Authentication
+- Google OAuth 2.0
+- Passport.js
+- Express Session
+- Google Gemini AI (@google/genai)
 - CORS
 - Dotenv
 
 ---
 
-## Database
+# Features
 
-### Database Choice
+## Authentication
+
+- User Registration
+- User Login
+- JWT Authentication
+- Google OAuth Login
+- Protected Routes
+- Secure Password Hashing
+- Session Management
+
+## Product Management
+
+- Create Product
+- View Products
+- Update Product
+- Delete Product
+- Product Search
+- MongoDB Atlas Integration
+
+## AI Features
+
+- AI Product Description Generator
+- Google Gemini AI Integration
+- Multiple Writing Tones
+- Ingredient-Aware Descriptions
+- Professional Marketing Copy
+- Fast AI Response
+
+---
+
+# Database
+
+## Database Choice
 
 This project uses **MongoDB Atlas** with **Mongoose ODM** for persistent cloud storage.
 
-MongoDB was chosen because product information is document-based and requires a flexible schema. MongoDB Atlas provides secure cloud hosting, easy scalability, and seamless integration with Mongoose.
+MongoDB was selected because product information is document-based and benefits from a flexible schema.
 
-### Database Schema
+---
 
-The application stores product information in the **Product** collection.
+# Database Schema
+
+## User Collection
 
 | Field | Type |
-|-------|------|
+|--------|------|
+| _id | ObjectId |
+| name | String |
+| email | String |
+| password | String |
+| googleId | String |
+| createdAt | Date |
+
+---
+
+## Product Collection
+
+| Field | Type |
+|--------|------|
 | _id | ObjectId |
 | productName | String |
 | ingredients | String |
@@ -45,73 +99,56 @@ The application stores product information in the **Product** collection.
 | createdAt | Date |
 | updatedAt | Date |
 
-### Schema Diagram
+---
+
+# Schema Diagram
 
 ![Schema Diagram](./W5_SchemaDiagram_26100903.png)
 
-## Features
-
-- AI Product Description Generator
-- Full CRUD Operations (Create, Read, Update, Delete)
-- MongoDB Atlas Integration
-- Persistent Cloud Database
-- Product Search
-- RESTful APIs
-- Frontend–Backend Integration
-- API Testing using Postman
-- Responsive User Interface
-
 ---
 
-## Project Structure
+# Project Structure
 
 ```text
 ai-product-description-generator/
 │
 ├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── routes/
+│   │   └── App.jsx
 │
 ├── backend/
 │   ├── config/
-│   │   └── db.js
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
-│   │   └── Product.js
+│   │   ├── Product.js
+│   │   └── User.js
 │   ├── routes/
 │   ├── .env.example
 │   ├── package.json
 │   └── server.js
 │
 ├── README.md
-├── W5_SchemaDiagram_26100903.png
-└── ...
+├── PROMPTS.md
+└── W5_SchemaDiagram_26100903.png
 ```
 
 ---
 
-## Set Up the Database
+# Installation
 
-1. Create a **MongoDB Atlas** account.
-2. Create a **Free M0 Cluster**.
-3. Create a **Database User**.
-4. Add your current IP address under **Network Access**.
-5. Copy the MongoDB connection string.
-6. Create a `.env` file inside the **backend** folder.
+## Clone Repository
 
-Example:
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
+```bash
+git clone https://github.com/yourusername/ai-product-description-generator.git
 ```
-
-> Do **not** commit your `.env` file to GitHub. Use `.env.example` with placeholder values instead.
 
 ---
 
-## Running the Project
-
-### Backend
+## Backend
 
 ```bash
 cd backend
@@ -119,13 +156,15 @@ npm install
 npm run dev
 ```
 
-Runs on:
+Backend runs at
 
-```text
+```
 http://localhost:5000
 ```
 
-### Frontend
+---
+
+## Frontend
 
 ```bash
 cd frontend
@@ -133,56 +172,124 @@ npm install
 npm run dev
 ```
 
-Runs on:
+Frontend runs at
 
-```text
+```
 http://localhost:5173
 ```
 
 ---
 
-## API Endpoints
+# Environment Variables
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/products` | Get all products |
-| GET | `/api/products/:id` | Get product by ID |
-| POST | `/api/products` | Create a product |
-| PUT | `/api/products/:id` | Update a product |
-| DELETE | `/api/products/:id` | Delete a product |
-| GET | `/api/products/search?q=keyword` | Search products |
-
----
-
-## Environment Variables
-
-Create a `.env` file inside the **backend** folder.
+Create a `.env` file inside the backend folder.
 
 ```env
 PORT=5000
+
 MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
+
+SESSION_SECRET=your_session_secret
+
+GOOGLE_CLIENT_ID=your_google_client_id
+
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+GEMINI_API_KEY=your_gemini_api_key
 ```
 
-A sample configuration is provided in `.env.example`.
+---
+
+# API Endpoints
+
+## Authentication
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/auth/register | Register User |
+| POST | /api/auth/login | Login User |
+| GET | /api/auth/google | Google Login |
+| GET | /api/auth/logout | Logout |
 
 ---
 
-## Week 5 Progress
+## Products
 
-- MongoDB Atlas Integration
-- Mongoose ODM Integration
-- Database Schema Design
-- Persistent Cloud Database
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /api/products | Get All Products |
+| POST | /api/products | Create Product |
+| PUT | /api/products/:id | Update Product |
+| DELETE | /api/products/:id | Delete Product |
+| GET | /api/products/search?q=keyword | Search Products |
+
+---
+
+## AI
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/ai/generate | Generate AI Product Description |
+
+---
+
+# AI Request
+
+```json
+{
+  "productName": "Organic Mango Pickle",
+  "ingredients": "Raw Mango, Salt, Mustard Oil",
+  "weight": "500g",
+  "tone": "Premium"
+}
+```
+
+---
+
+# AI Response
+
+```json
+{
+  "success": true,
+  "description": "AI generated product description..."
+}
+```
+
+---
+
+# Project Highlights
+
+- JWT Authentication
+- Google OAuth Login
+- Protected Routes
+- MongoDB Atlas Database
 - Full CRUD Operations
-- React Frontend Connected to Backend
 - Product Search
-- Edit and Delete Functionality
-- API Testing using Postman
+- Google Gemini AI Integration
+- AI Generated Product Descriptions
+- Responsive UI
+- RESTful APIs
+- API Testing with Postman
 
 ---
 
-## Author
+# Future Improvements
+
+- Image Upload
+- AI Image Generation
+- Multi-language Product Descriptions
+- Admin Dashboard
+- Product Analytics
+- Export Description as PDF
+
+---
+
+# Author
 
 **Arnav Singh**
 
-B.Tech CSE, Graphic Era Deemed to be University
+B.Tech CSE (AI & DS)
+
+Graphic Era Deemed to be University
