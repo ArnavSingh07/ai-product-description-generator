@@ -23,7 +23,7 @@ A full-stack AI-powered web application that helps Food Processing MSMEs generat
 - Google OAuth 2.0
 - Passport.js
 - Express Session
-- Google Gemini AI (@google/genai)
+- Google Gemini AI (`@google/genai`)
 - CORS
 - Dotenv
 
@@ -58,6 +58,8 @@ A full-stack AI-powered web application that helps Food Processing MSMEs generat
 - Ingredient-Aware Descriptions
 - Professional Marketing Copy
 - Fast AI Response
+- Loading State During AI Generation
+- User-Friendly Error Handling
 
 ---
 
@@ -112,27 +114,27 @@ MongoDB was selected because product information is document-based and benefits 
 ```text
 ai-product-description-generator/
 │
+├── backend/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── validation/
+│   ├── .env.example
+│   ├── package.json
+│   └── server.js
+│
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
 │   │   ├── routes/
 │   │   └── App.jsx
+│   └── package.json
 │
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   │   ├── Product.js
-│   │   └── User.js
-│   ├── routes/
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js
-│
-├── README.md
 ├── PROMPTS.md
+├── README.md
 └── W5_SchemaDiagram_26100903.png
 ```
 
@@ -143,12 +145,16 @@ ai-product-description-generator/
 ## Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/ai-product-description-generator.git
+git clone https://github.com/ArnavSingh07/ai-product-description-generator.git
+```
+
+```bash
+cd ai-product-description-generator
 ```
 
 ---
 
-## Backend
+## Backend Setup
 
 ```bash
 cd backend
@@ -156,7 +162,7 @@ npm install
 npm run dev
 ```
 
-Backend runs at
+Backend runs at:
 
 ```
 http://localhost:5000
@@ -164,7 +170,7 @@ http://localhost:5000
 
 ---
 
-## Frontend
+## Frontend Setup
 
 ```bash
 cd frontend
@@ -172,7 +178,7 @@ npm install
 npm run dev
 ```
 
-Frontend runs at
+Frontend runs at:
 
 ```
 http://localhost:5173
@@ -182,7 +188,7 @@ http://localhost:5173
 
 # Environment Variables
 
-Create a `.env` file inside the backend folder.
+Create a `.env` file inside the **backend** folder.
 
 ```env
 PORT=5000
@@ -259,6 +265,17 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ---
 
+# AI Workflow
+
+1. User enters product details on the frontend.
+2. The frontend sends a **POST** request to `/api/ai/generate`.
+3. The Express backend validates the request.
+4. The backend securely calls the **Google Gemini API** using the API key stored in the `.env` file.
+5. Google Gemini generates a professional product description.
+6. The generated description is returned to the frontend and displayed to the user.
+
+---
+
 # Project Highlights
 
 - JWT Authentication
@@ -272,6 +289,19 @@ GEMINI_API_KEY=your_gemini_api_key
 - Responsive UI
 - RESTful APIs
 - API Testing with Postman
+- Loading State & Error Handling
+
+---
+
+# Week 7 Deliverables
+
+- Google Gemini AI Integration
+- AI Product Description Generator
+- Secure API Key Management using `.env`
+- Loading State during AI requests
+- Error Handling for failed API calls
+- PROMPTS.md Documentation
+- Updated README
 
 ---
 
@@ -293,3 +323,9 @@ GEMINI_API_KEY=your_gemini_api_key
 B.Tech CSE (AI & DS)
 
 Graphic Era Deemed to be University
+
+---
+
+# License
+
+This project was developed for educational purposes as part of the **TBI-GEU AI-Assisted Full Stack Development Internship**.
