@@ -3,7 +3,9 @@ const jwt = require("jsonwebtoken");
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
-  // Check if token exists
+  console.log("Authorization Header:", authHeader);
+  console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
       success: false,
@@ -16,10 +18,13 @@ const verifyToken = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    req.user = decoded;
+    console.log("Decoded Token:", decoded);
 
+    req.user = decoded;
     next();
   } catch (error) {
+    console.log("JWT ERROR:", error.message);
+
     return res.status(401).json({
       success: false,
       message: "Invalid or expired token.",

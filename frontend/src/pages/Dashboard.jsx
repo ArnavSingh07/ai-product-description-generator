@@ -1,16 +1,53 @@
+import { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Loader from "../components/ui/Loader";
+import Toast from "../components/ui/Toast";
 
-export default function Dashboard({
-  darkMode,
-  setDarkMode,
-}) {
+export default function Dashboard({ darkMode, setDarkMode }) {
+  const [products, setProducts] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/products");
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch products");
+      }
+
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      setError("Unable to load products.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+ const filteredProducts = useMemo(() => {
+  return products.filter((product) =>
+    product.productName
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+}, [products, search]);
+
+  // 🔴 TEMPORARY: Test Error Boundary
+  //throw new Error("Test Error Boundary");
+
   return (
     <>
-    <Navbar
-  darkMode={darkMode}
-  setDarkMode={setDarkMode}
-/>
+      <Navbar
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
+      />
 
       <main
         className={`max-w-6xl mx-auto p-6 min-h-screen ${
@@ -19,87 +56,93 @@ export default function Dashboard({
             : "bg-white text-black"
         }`}
       >
-        <h1 className="text-3xl font-bold mb-6">
+        <h1 className="text-3xl font-bold mb-2">
           Dashboard
         </h1>
-        <p className="mb-8">
-  Manage and view AI-generated product descriptions.
-</p>
 
-<input
-  type="text"
-  placeholder="Search descriptions..."
-  className="border p-2 rounded w-full mb-6"
-/>
+        <p className="mb-6">
+          Manage and view your AI-generated product descriptions.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+  <div className="bg-blue-600 text-white rounded-xl p-5 shadow">
+    <h3 className="text-lg font-semibold">Total Products</h3>
+    <p className="text-3xl font-bold mt-2">{products.length}</p>
+  </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+  <div className="bg-green-600 text-white rounded-xl p-5 shadow">
+    <h3 className="text-lg font-semibold">Search Results</h3>
+    <p className="text-3xl font-bold mt-2">{filteredProducts.length}</p>
+  </div>
 
-          <div
-            className={`border rounded-lg p-4 shadow ${
-              darkMode
-                ? "bg-gray-800 text-white"
-                : "bg-white text-black"
-            }`}
-          >
-            <h2 className="font-bold text-lg mb-2">
-              Description 1
-            </h2>
+  <div className="bg-purple-600 text-white rounded-xl p-5 shadow">
+    <h3 className="text-lg font-semibold">Status</h3>
+    <p className="text-xl font-bold mt-2">
+      {loading ? "Loading..." : "Ready"}
+    </p>
+  </div>
+</div>
 
-            <p>
-  Premium product description for organic mango pickle.
-</p>
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-3 mb-6 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
 
-<button className="mt-3 bg-gray-700 text-white px-3 py-1 rounded">
-  View Details
-</button>
-          </div>
+        {loading && <Loader />}
 
-          <div
-            className={`border rounded-lg p-4 shadow ${
-              darkMode
-                ? "bg-gray-800 text-white"
-                : "bg-white text-black"
-            }`}
-          >
-            <h2 className="font-bold text-lg mb-2">
-              Description 2
-            </h2>
+        {error && <Toast message={error} />}
 
-            <p>
-  SEO-friendly description for packaged spices.
-</p>
+        {!loading && filteredProducts.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-16 border rounded-xl bg-gray-50 shadow-sm">
+  <div className="text-6xl mb-4">📦</div>
 
-<button className="mt-3 bg-gray-700 text-white px-3 py-1 rounded">
-  View Details
-</button>
-          </div>
+  <h2 className="text-2xl font-bold text-gray-700 mb-2">
+    No Products Yet
+  </h2>
 
-          <div
-            className={`border rounded-lg p-4 shadow ${
-              darkMode
-                ? "bg-gray-800 text-white"
-                : "bg-white text-black"
-            }`}
-          >
-            <h2 className="font-bold text-lg mb-2">
-              Description 3
-            </h2>
+  <p className="text-gray-500 text-center max-w-md">
+    Create your first AI-generated product description using the AI Feature page.
+  </p>
+</div>
+        )}
 
-            <p>
-  Marketplace-ready content for millet snacks.
-</p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredProducts.map((product) => (
+            <div
+              key={product._id}
+             className={`border rounded-xl p-5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
+  darkMode
+    ? "bg-gray-800 text-white"
+    : "bg-white text-black"
+}`}
+            >
+              <h2 className="text-xl font-bold mb-3">
+                {product.productName}
+              </h2>
 
-<button className="mt-3 bg-gray-700 text-white px-3 py-1 rounded">
-  View Details
-</button>
-          </div>
+              <p>
+                <strong>Ingredients:</strong> {product.ingredients}
+              </p>
 
-        </div>
+              <p>
+                <strong>Weight:</strong> {product.weight}
+              </p>
 
-        <div className="mt-8">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded">
-            Generate New Description
-          </button>
+              <p>
+                <strong>Tone:</strong> {product.tone}
+              </p>
+
+              <p className="mt-3">
+                <strong>Description:</strong>
+              </p>
+
+              <p className="text-sm mt-2">
+                {product.description}
+              </p>
+            </div>
+          ))}
         </div>
       </main>
 

@@ -40,12 +40,6 @@ export default function AIFeature({ darkMode, setDarkMode }) {
 
       if (data.success) {
         setResult(data.description);
-
-        // Clear form after success
-        setProductName("");
-        setIngredients("");
-        setWeight("");
-        setTone("Premium");
       } else {
         setError(data.message || "Failed to generate description.");
       }
@@ -57,6 +51,44 @@ export default function AIFeature({ darkMode, setDarkMode }) {
     }
   };
 
+  const saveProduct = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch("http://localhost:5000/api/products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          productName,
+          ingredients,
+          weight,
+          tone,
+          description: result,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("✅ Product saved successfully!");
+
+        setProductName("");
+        setIngredients("");
+        setWeight("");
+        setTone("Premium");
+        setResult("");
+      } else {
+        alert(data.message || "Failed to save product.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("❌ Server Error");
+    }
+  };
+
   return (
     <>
       <Navbar
@@ -65,7 +97,6 @@ export default function AIFeature({ darkMode, setDarkMode }) {
       />
 
       <main className="max-w-4xl mx-auto p-6 min-h-screen">
-
         <h1 className="text-4xl font-bold text-center mb-2">
           🤖 AI Product Description Generator
         </h1>
@@ -75,7 +106,6 @@ export default function AIFeature({ darkMode, setDarkMode }) {
         </p>
 
         <div className="bg-white shadow-lg rounded-xl p-6 space-y-5">
-
           <input
             type="text"
             placeholder="Product Name"
@@ -131,16 +161,13 @@ export default function AIFeature({ darkMode, setDarkMode }) {
           )}
 
           <div className="border rounded-xl p-5 min-h-[220px] bg-gray-50 shadow-sm whitespace-pre-wrap leading-8">
-
             {loading ? (
               <div className="flex flex-col items-center justify-center h-full">
-
                 <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
 
                 <p className="mt-4 text-blue-600 font-semibold">
                   🤖 Gemini AI is generating your description...
                 </p>
-
               </div>
             ) : result ? (
               <>
@@ -149,17 +176,21 @@ export default function AIFeature({ darkMode, setDarkMode }) {
                 </h2>
 
                 <p>{result}</p>
+
+                <button
+                  onClick={saveProduct}
+                  className="mt-6 w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+                >
+                  💾 Save Product
+                </button>
               </>
             ) : (
               <div className="text-gray-500 text-center mt-12">
                 AI generated description will appear here...
               </div>
             )}
-
           </div>
-
         </div>
-
       </main>
 
       <Footer />
