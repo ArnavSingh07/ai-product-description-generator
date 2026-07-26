@@ -79,7 +79,13 @@ export default function ListView({ darkMode, setDarkMode }) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(editForm),
+          body: JSON.stringify({
+  productName: editForm.productName.trim(),
+  ingredients: editForm.ingredients.trim(),
+  weight: editForm.weight.trim(),
+  tone: editForm.tone.trim(),
+  description: editForm.description.trim(),
+}),
         }
       );
 
