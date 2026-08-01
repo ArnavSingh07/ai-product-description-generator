@@ -38,7 +38,9 @@ export default function ListView({ darkMode, setDarkMode }) {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products");
+      const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/products`
+);
 
       if (!res.ok) {
         throw new Error("Failed to fetch products");
@@ -71,8 +73,8 @@ export default function ListView({ darkMode, setDarkMode }) {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/products/${editingProduct._id}`,
+     const response = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/products/${editingProduct._id}`,
         {
           method: "PUT",
           headers: {
@@ -121,7 +123,7 @@ export default function ListView({ darkMode, setDarkMode }) {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/products/${id}`,
+  `${import.meta.env.VITE_API_URL}/api/products/${id}`,
         {
           method: "DELETE",
           headers: {

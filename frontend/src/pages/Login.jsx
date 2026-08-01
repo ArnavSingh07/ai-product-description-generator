@@ -22,7 +22,7 @@ export default function Login({ darkMode, setDarkMode }) {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -102,8 +102,7 @@ export default function Login({ darkMode, setDarkMode }) {
           <button
             type="button"
             onClick={() => {
-              window.location.href =
-                "http://localhost:5000/api/auth/google";
+                window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
             }}
             className="w-full bg-red-600 text-white p-3 rounded-lg hover:bg-red-700 transition"
           >

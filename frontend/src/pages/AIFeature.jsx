@@ -23,18 +23,21 @@ export default function AIFeature({ darkMode, setDarkMode }) {
     setResult("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/ai/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productName,
-          ingredients,
-          weight,
-          tone,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/ai/generate`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productName,
+            ingredients,
+            weight,
+            tone,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -55,20 +58,23 @@ export default function AIFeature({ darkMode, setDarkMode }) {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch("http://localhost:5000/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          productName,
-          ingredients,
-          weight,
-          tone,
-          description: result,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            productName,
+            ingredients,
+            weight,
+            tone,
+            description: result,
+          }),
+        }
+      );
 
       const data = await response.json();
 
