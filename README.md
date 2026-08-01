@@ -215,6 +215,71 @@ GEMINI_API_KEY=your_gemini_api_key
 ```
 
 ---
+---
+
+# Live Deployment
+
+## Frontend (Vercel)
+
+https://ai-product-description-generator-ixac0ui2j-panda-96cc.vercel.app
+
+## Backend (Render)
+
+https://ai-product-description-backend-k120.onrender.com
+
+---
+
+# Deployment Architecture
+
+Frontend (React + Vite)
+↓
+Vercel
+
+↓
+
+Backend (Express.js)
+↓
+Render
+
+↓
+
+Database
+MongoDB Atlas
+
+↓
+
+AI Service
+Google Gemini API
+
+---
+
+# Production Environment Variables
+
+## Backend (.env)
+
+```env
+PORT=5000
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
+
+SESSION_SECRET=your_session_secret
+
+GOOGLE_CLIENT_ID=your_google_client_id
+
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+
+GEMINI_API_KEY=your_gemini_api_key
+
+CLIENT_URL=https://ai-product-description-generator-ixac0ui2j-panda-96cc.vercel.app
+```
+
+## Frontend (.env)
+
+```env
+VITE_API_URL=https://ai-product-description-backend-k120.onrender.com
+```
 
 # API Endpoints
 
@@ -284,26 +349,31 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ---
 
-# Project Highlights
 
 # Project Highlights
 
+# Project Highlights
+
+- Full-Stack MERN Application
+- AI-Powered Product Description Generator
+- Google Gemini AI Integration
 - JWT Authentication
-- Google OAuth Login
+- Google OAuth Authentication
+- MongoDB Atlas Cloud Database
+- RESTful API Development
+- Secure Password Hashing
 - Protected Routes
-- MongoDB Atlas Integration
-- Full CRUD Operations
-- AI Product Description Generator (Google Gemini)
-- Product Search with Optimized Filtering
-- Authenticated Dashboard
-- List View Management
-- Responsive UI (375px, 768px, 1440px)
-- Toast Notifications
-- Error Boundary
+- Product CRUD Operations
+- Product Search
+- Responsive Dashboard
 - Loading States
-- Empty State UI
-- RESTful APIs
-- API Testing with Postman
+- Error Handling
+- Toast Notifications
+- Environment Variable Management
+- Cloud Deployment (Render + Vercel)
+- Production-Ready Architecture
+- Mobile Responsive UI
+- API Testing using Postman
 
 ---
 
@@ -336,18 +406,72 @@ Implemented complete frontend integration with backend APIs.
 - Empty state design for products
 - Performance improvements using React best practices
 
-# Future Improvements
+---
+
+# Week 9 Deliverables
+
+## Application Deployment
+
+Successfully deployed the complete full-stack application to cloud platforms.
+
+### Frontend
+
+- Hosted on Vercel
+- Production build using Vite
+- Environment variables configured
+- Connected with Render backend
+
+### Backend
+
+- Hosted on Render
+- MongoDB Atlas connected
+- Production CORS configuration
+- REST APIs deployed
+- Google Gemini AI integration
+- JWT Authentication enabled
+
+### Production Testing
+
+Successfully tested:
+
+- User Registration
+- User Login
+- Protected Routes
+- Dashboard
+- AI Product Description Generation
+- Save Product
+- Product Listing
+- Product Search
+- MongoDB CRUD Operations
+
+### Deployment Challenges Solved
+
+- MongoDB Atlas IP Whitelisting
+- Render Environment Variables
+- Production CORS Configuration
+- Frontend API URL Configuration
+- Google OAuth Callback Configuration
+- Secure Environment Variable Management
+
+---
 
 # Future Improvements
 
-- Image Upload Support
+# Future Improvements
+
 - AI Image Generation
+- Product Image Upload
 - Multi-language Product Descriptions
-- Product Analytics Dashboard
-- Admin Panel
-- Export Product Descriptions as PDF
-- Cloud Deployment using Render and Vercel
-
+- AI SEO Optimization
+- Analytics Dashboard
+- Inventory Management
+- Export Product Details as PDF
+- Admin Dashboard
+- Email Notifications
+- Docker Containerization
+- CI/CD using GitHub Actions
+- Kubernetes Deployment
+- Custom Domain Support
 
 ---
 # Screenshots
@@ -370,6 +494,25 @@ The project includes:
 B.Tech CSE (AI & DS)
 
 Graphic Era Deemed to be University
+
+---
+---
+
+# Deployment Information
+
+| Service | Platform |
+|----------|----------|
+| Frontend | Vercel |
+| Backend | Render |
+| Database | MongoDB Atlas |
+| AI Model | Google Gemini AI |
+
+## Known Limitations
+
+- Render free tier may sleep after approximately 15 minutes of inactivity.
+- The first request after inactivity may take 30–60 seconds while the backend wakes up.
+- Google OAuth requires valid production callback URLs.
+- Free hosting resources may have limited compute capacity.
 
 ---
 
