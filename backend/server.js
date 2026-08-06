@@ -15,6 +15,9 @@ const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 
+// ✅ Trust Render's proxy (Required for express-rate-limit)
+app.set("trust proxy", 1);
+
 // Connect Database
 connectDB();
 
@@ -30,7 +33,7 @@ app.use(express.json());
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET || "your_session_secret",
     resave: false,
     saveUninitialized: false,
   })
