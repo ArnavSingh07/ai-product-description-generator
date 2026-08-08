@@ -1,6 +1,15 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+
+import AIHeader from "../components/ai/AIHeader";
+import AIInputPanel from "../components/ai/AIInputPanel";
+import AIOutputPanel from "../components/ai/AIOutputPanel";
+import AISettings from "../components/ai/AISettings";
+import AIActions from "../components/ai/AIActions";
+import UploadImage from "../components/ai/UploadImage";
 
 export default function AIFeature({ darkMode, setDarkMode }) {
   const [productName, setProductName] = useState("");
@@ -8,19 +17,31 @@ export default function AIFeature({ darkMode, setDarkMode }) {
   const [weight, setWeight] = useState("");
   const [tone, setTone] = useState("Premium");
 
-  const [result, setResult] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const [result, setResult] = useState(null);
+
   const [loading, setLoading] = useState(false);
+
+  const [imageLoading, setImageLoading] = useState(false);
+
   const [error, setError] = useState("");
+
+  const clearResult = () => {
+    setResult(null);
+    setError("");
+  };
 
   const generateDescription = async () => {
     if (!productName || !ingredients || !weight || !tone) {
       setError("⚠️ Please fill all the fields.");
+      toast.error("Please fill all the fields.");
       return;
     }
 
     setLoading(true);
     setError("");
-    setResult("");
+    setResult(null);
 
     try {
       const response = await fetch(
@@ -42,19 +63,27 @@ export default function AIFeature({ darkMode, setDarkMode }) {
       const data = await response.json();
 
       if (data.success) {
-        setResult(data.description);
+        setResult(data.data);
+        toast.success("Description generated successfully!");
       } else {
-        setError(data.message || "Failed to generate description.");
+        setError(data.message);
+        toast.error(data.message || "Generation failed.");
       }
     } catch (err) {
       console.error(err);
-      setError("❌ Unable to connect to the backend.");
+      setError("Unable to connect to backend.");
+      toast.error("Unable to connect to backend.");
     } finally {
       setLoading(false);
     }
   };
 
   const saveProduct = async () => {
+    if (!result) {
+      toast.error("Generate a product first.");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
 
@@ -71,7 +100,13 @@ export default function AIFeature({ darkMode, setDarkMode }) {
             ingredients,
             weight,
             tone,
-            description: result,
+
+            title: result.title,
+            description: result.description,
+            features: result.features,
+            seoKeywords: result.seoKeywords,
+            metaDescription: result.metaDescription,
+            marketingCaption: result.marketingCaption,
           }),
         }
       );
@@ -79,19 +114,21 @@ export default function AIFeature({ darkMode, setDarkMode }) {
       const data = await response.json();
 
       if (response.ok) {
-        alert("✅ Product saved successfully!");
+        toast.success("Product saved successfully!");
 
         setProductName("");
         setIngredients("");
         setWeight("");
         setTone("Premium");
-        setResult("");
+
+        setSelectedImage(null);
+        setResult(null);
       } else {
-        alert(data.message || "Failed to save product.");
+        toast.error(data.message || "Unable to save product.");
       }
-    } catch (error) {
-      console.error(error);
-      alert("❌ Server Error");
+    } catch (err) {
+      console.error(err);
+      toast.error("Server Error");
     }
   };
 
@@ -102,100 +139,67 @@ export default function AIFeature({ darkMode, setDarkMode }) {
         setDarkMode={setDarkMode}
       />
 
-      <main className="max-w-4xl mx-auto p-6 min-h-screen">
-        <h1 className="text-4xl font-bold text-center mb-2">
-          🤖 AI Product Description Generator
-        </h1>
+      <main className="min-h-screen bg-gray-50 py-10">
+        <div className="max-w-7xl mx-auto px-6">
 
-        <p className="text-center text-gray-500 mb-8">
-          Generate professional AI-powered product descriptions using Gemini AI.
-        </p>
-
-        <div className="bg-white shadow-lg rounded-xl p-6 space-y-5">
-          <input
-            type="text"
-            placeholder="Product Name"
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Ingredients"
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={ingredients}
-            onChange={(e) => setIngredients(e.target.value)}
-          />
-
-          <input
-            type="text"
-            placeholder="Weight (Example: 500g)"
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-          />
-
-          <select
-            className="border p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={tone}
-            onChange={(e) => setTone(e.target.value)}
-          >
-            <option value="Premium">Premium</option>
-            <option value="Traditional">Traditional</option>
-            <option value="Health Focused">Health Focused</option>
-            <option value="Modern">Modern</option>
-            <option value="Luxury">Luxury</option>
-          </select>
-
-          <button
-            onClick={generateDescription}
-            disabled={loading}
-            className={`w-full py-3 rounded-lg text-white font-semibold transition ${
-              loading
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {loading ? "Generating..." : "✨ Generate Description"}
-          </button>
+          <AIHeader />
 
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 p-4 rounded-lg">
+            <div className="mb-6 rounded-xl bg-red-100 border border-red-300 p-4 text-red-700">
               {error}
             </div>
           )}
 
-          <div className="border rounded-xl p-5 min-h-[220px] bg-gray-50 shadow-sm whitespace-pre-wrap leading-8">
-            {loading ? (
-              <div className="flex flex-col items-center justify-center h-full">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-blue-600"></div>
+          <div className="grid lg:grid-cols-2 gap-8">
 
-                <p className="mt-4 text-blue-600 font-semibold">
-                  🤖 Gemini AI is generating your description...
-                </p>
-              </div>
-            ) : result ? (
-              <>
-                <h2 className="text-xl font-bold mb-4 text-green-700">
-                  ✅ Generated Description
-                </h2>
+            {/* LEFT PANEL */}
+            <div className="space-y-6">
 
-                <p>{result}</p>
+              <UploadImage
+                image={selectedImage}
+                setImage={setSelectedImage}
+                setProductName={setProductName}
+                setIngredients={setIngredients}
+                setWeight={setWeight}
+                imageLoading={imageLoading}
+                setImageLoading={setImageLoading}
+                clearResult={clearResult}
+              />
 
-                <button
-                  onClick={saveProduct}
-                  className="mt-6 w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
-                >
-                  💾 Save Product
-                </button>
-              </>
-            ) : (
-              <div className="text-gray-500 text-center mt-12">
-                AI generated description will appear here...
-              </div>
-            )}
+              <AIInputPanel
+                productName={productName}
+                setProductName={setProductName}
+                ingredients={ingredients}
+                setIngredients={setIngredients}
+                weight={weight}
+                setWeight={setWeight}
+                generateDescription={generateDescription}
+                loading={loading || imageLoading}
+              />
+
+              <AISettings
+                tone={tone}
+                setTone={setTone}
+              />
+
+            </div>
+
+            {/* RIGHT PANEL */}
+            <div className="space-y-6">
+
+              <AIOutputPanel
+                result={result}
+              />
+
+              <AIActions
+                saveProduct={saveProduct}
+                result={result}
+              />
+
+            </div>
+
           </div>
+
         </div>
       </main>
 

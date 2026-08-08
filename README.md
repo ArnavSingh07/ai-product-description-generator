@@ -1,6 +1,8 @@
-# AI Product Description Generator
+# AI Product Description Generator using Google Gemini AI
 
-A full-stack AI-powered web application that helps Food Processing MSMEs generate professional product descriptions using **Google Gemini AI**. The application provides secure authentication, product management, and AI-powered content generation using a React frontend, Express.js backend, and MongoDB Atlas.
+A full-stack AI-powered web application that enables Food Processing MSMEs to generate high-quality product descriptions using Google Gemini AI. Users can upload a product image for AI-based product analysis, automatically extract product details, generate SEO-friendly marketing content, manage products securely, and export generated content in multiple formats.
+
+The application is built using React.js, Node.js, Express.js, MongoDB Atlas, and Google Gemini AI with JWT and Google OAuth authentication.
 
 ---
 
@@ -40,7 +42,6 @@ A full-stack AI-powered web application that helps Food Processing MSMEs generat
 - Protected Routes
 - Secure Password Hashing
 - Session Management
-
 ## Product Management
 
 - Create Product
@@ -48,28 +49,40 @@ A full-stack AI-powered web application that helps Food Processing MSMEs generat
 - Update Product
 - Delete Product
 - Product Search
-- MongoDB Atlas Integration
-- Real-time Dashboard
-- Authenticated User Dashboard
+- Dashboard Analytics
 - Responsive Product Cards
+- Export Product as PDF
+- Export Product as TXT
+- Export Product as JSON
+- MongoDB Atlas Integration
 
 ## AI Features
 
-- AI Product Description Generator
+- AI Product Description Generation
+- AI Product Image Analysis
+- Automatic Product Detail Extraction
 - Google Gemini AI Integration
 - Multiple Writing Tones
-- Ingredient-Aware Descriptions
-- Professional Marketing Copy
-- Fast AI Response
-- Loading State During AI Generation
-- User-Friendly Error Handling
+- Ingredient-Aware Description Generation
+- SEO Keyword Generation
+- Meta Description Generation
+- Marketing Caption Generation
 - AI Output Preview
-- Save Generated Product
+- Loading Indicators
 - Toast Notifications
-- Empty State UI
-- Error Boundary
+- Smart Error Handling
+- Save Generated Products
 
 ---
+## Image Analysis
+
+- Upload Product Images
+- Supports JPG, PNG and WEBP
+- AI Detects Product Name
+- AI Detects Ingredients
+- AI Estimates Product Weight
+- Automatic Form Auto-fill
+- AI-assisted Product Recognition
 
 # Database
 
@@ -119,32 +132,68 @@ MongoDB was selected because product information is document-based and benefits 
 
 # Project Structure
 
-```text
 ai-product-description-generator/
 │
 ├── backend/
 │   ├── config/
+│   │   ├── db.js
+│   │   └── passport.js
+│   │
 │   ├── controllers/
+│   │   ├── aiController.js
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── uploadController.js
+│   │
 │   ├── middleware/
+│   │   ├── authMiddleware.js
+│   │   ├── uploadMiddleware.js
+│   │   ├── rateLimiter.js
+│   │   └── errorHandler.js
+│   │
 │   ├── models/
+│   │   ├── User.js
+│   │   └── Product.js
+│   │
 │   ├── routes/
-│   ├── validation/
+│   │   ├── aiRoutes.js
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── uploadRoutes.js
+│   │
 │   ├── .env.example
 │   ├── package.json
 │   └── server.js
 │
 ├── frontend/
+│   ├── public/
+│   │
 │   ├── src/
 │   │   ├── components/
+│   │   │   ├── ai/
+│   │   │   ├── ui/
+│   │   │   ├── Navbar.jsx
+│   │   │   └── Footer.jsx
+│   │   │
 │   │   ├── pages/
-│   │   ├── routes/
-│   │   └── App.jsx
-│   └── package.json
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Signup.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── ListView.jsx
+│   │   │   └── AIFeature.jsx
+│   │   │
+│   │   ├── utils/
+│   │   │   └── exportProduct.js
+│   │   │
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── vite.config.js
 │
-├── PROMPTS.md
 ├── README.md
-└── W5_SchemaDiagram_26100903.png
-```
+└── PROMPTS.md
 
 ---
 
@@ -216,8 +265,57 @@ GEMINI_API_KEY=your_gemini_api_key
 
 ---
 ---
+---
 
-# Live Deployment
+# 🌐 Live Deployment
+
+## Frontend (Vercel)
+
+https://ai-product-description-generator-ixac0ui2j-panda-96cc.vercel.app
+
+## Backend (Render)
+
+https://ai-product-description-backend-k120.onrender.com
+
+---
+
+# Tech Stack Summary
+
+## Frontend
+
+- React.js
+- Vite
+- Tailwind CSS
+- React Router DOM
+
+## Backend
+
+- Node.js
+- Express.js
+- MongoDB Atlas
+- Mongoose ODM
+- JWT Authentication
+- Passport.js
+- Google OAuth 2.0
+
+## AI
+
+- Google Gemini AI
+
+## Deployment
+
+- Vercel
+- Render
+
+---
+
+# Known Limitations (Free Tier)
+
+- Render free-tier services may become inactive after approximately 15 minutes of inactivity.
+- The first request after inactivity may take 30–60 seconds while the backend wakes up.
+- Free-tier hosting provides limited compute resources compared to paid plans.
+
+---
 
 ## Frontend (Vercel)
 
@@ -282,6 +380,10 @@ VITE_API_URL=https://ai-product-description-backend-k120.onrender.com
 ```
 
 # API Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/ai/generate | Generate Product Description |
+| POST | /api/ai/analyze-image | Analyze Product Image |
 
 ## Authentication
 
@@ -348,32 +450,37 @@ VITE_API_URL=https://ai-product-description-backend-k120.onrender.com
 6. The generated description is returned to the frontend and displayed to the user.
 
 ---
+# Export Features
 
+Users can download generated product information in multiple formats:
 
-# Project Highlights
+- PDF
+- TXT
+- JSON
+
+This makes it easy to save, share, or reuse AI-generated product information.
+
 
 # Project Highlights
 
 - Full-Stack MERN Application
-- AI-Powered Product Description Generator
 - Google Gemini AI Integration
+- AI Product Description Generation
+- AI Product Image Analysis
+- Automatic Product Detail Extraction
 - JWT Authentication
 - Google OAuth Authentication
-- MongoDB Atlas Cloud Database
-- RESTful API Development
-- Secure Password Hashing
 - Protected Routes
+- MongoDB Atlas Integration
+- Dashboard Analytics
 - Product CRUD Operations
 - Product Search
-- Responsive Dashboard
-- Loading States
-- Error Handling
+- Export to PDF
+- Export to TXT
+- Export to JSON
+- Responsive UI
 - Toast Notifications
-- Environment Variable Management
-- Cloud Deployment (Render + Vercel)
-- Production-Ready Architecture
-- Mobile Responsive UI
-- API Testing using Postman
+- Cloud Deployment (Vercel + Render)
 
 ---
 
@@ -457,21 +564,19 @@ Successfully tested:
 
 # Future Improvements
 
-# Future Improvements
-
-- AI Image Generation
-- Product Image Upload
 - Multi-language Product Descriptions
-- AI SEO Optimization
-- Analytics Dashboard
+- AI SEO Score Optimization
+- Product Image Background Removal
+- Cloudinary Image Storage
 - Inventory Management
-- Export Product Details as PDF
+- Team Collaboration
 - Admin Dashboard
 - Email Notifications
-- Docker Containerization
-- CI/CD using GitHub Actions
+- Barcode Scanner Integration
+- Docker Support
+- GitHub Actions CI/CD
 - Kubernetes Deployment
-- Custom Domain Support
+- Custom Domain
 
 ---
 # Screenshots

@@ -1,48 +1,104 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Loader from "../components/ui/Loader";
-import Toast from "../components/ui/Toast";
+
+import {
+  Package,
+  Calendar,
+  Sparkles,
+  Database,
+  ArrowRight,
+  PlusCircle,
+  List,
+  Loader2,
+} from "lucide-react";
 
 export default function Dashboard({ darkMode, setDarkMode }) {
-  const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+
+  const [products, setProducts] = useState([]);
+
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    todayProducts: 0,
+    premiumProducts: 0,
+    totalWords: 0,
+  });
 
   useEffect(() => {
-    fetchProducts();
+    fetchDashboard();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchDashboard = async () => {
     try {
-     const res = await fetch(
-  `${import.meta.env.VITE_API_URL}/api/products`
-);
+      setLoading(true);
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch products");
-      }
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/products`
+      );
 
-      const data = await res.json();
+      const data = await response.json();
+
       setProducts(data);
+
+      const today = new Date().toDateString();
+
+      const todayProducts = data.filter(
+        (p) => new Date(p.createdAt).toDateString() === today
+      ).length;
+
+      const premiumProducts = data.filter(
+        (p) =>
+          p.tone &&
+          p.tone.toLowerCase() === "premium"
+      ).length;
+
+      const totalWords = data.reduce((sum, p) => {
+        return sum + (p.description || "").split(" ").length;
+      }, 0);
+
+      setStats({
+        totalProducts: data.length,
+        todayProducts,
+        premiumProducts,
+        totalWords,
+      });
+
     } catch (err) {
-      setError("Unable to load products.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
- const filteredProducts = useMemo(() => {
-  return products.filter((product) =>
-    product.productName
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
-}, [products, search]);
-
-  // 🔴 TEMPORARY: Test Error Boundary
-  //throw new Error("Test Error Boundary");
+  const cards = [
+    {
+      title: "Total Products",
+      value: stats.totalProducts,
+      icon: Package,
+      color: "bg-blue-500",
+    },
+    {
+      title: "Today's Products",
+      value: stats.todayProducts,
+      icon: Calendar,
+      color: "bg-green-500",
+    },
+    {
+      title: "Premium Products",
+      value: stats.premiumProducts,
+      icon: Sparkles,
+      color: "bg-purple-500",
+    },
+    {
+      title: "Generated Words",
+      value: stats.totalWords,
+      icon: Database,
+      color: "bg-orange-500",
+    },
+  ];
 
   return (
     <>
@@ -51,101 +107,174 @@ export default function Dashboard({ darkMode, setDarkMode }) {
         setDarkMode={setDarkMode}
       />
 
-      <main
-        className={`max-w-6xl mx-auto p-6 min-h-screen ${
-          darkMode
-            ? "bg-gray-900 text-white"
-            : "bg-white text-black"
-        }`}
-      >
-        <h1 className="text-3xl font-bold mb-2">
-          Dashboard
-        </h1>
+      <main className="min-h-screen bg-gray-50 py-10">
 
-        <p className="mb-6">
-          Manage and view your AI-generated product descriptions.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-  <div className="bg-blue-600 text-white rounded-xl p-5 shadow">
-    <h3 className="text-lg font-semibold">Total Products</h3>
-    <p className="text-3xl font-bold mt-2">{products.length}</p>
-  </div>
+        <div className="max-w-7xl mx-auto px-6">
 
-  <div className="bg-green-600 text-white rounded-xl p-5 shadow">
-    <h3 className="text-lg font-semibold">Search Results</h3>
-    <p className="text-3xl font-bold mt-2">{filteredProducts.length}</p>
-  </div>
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10">
 
-  <div className="bg-purple-600 text-white rounded-xl p-5 shadow">
-    <h3 className="text-lg font-semibold">Status</h3>
-    <p className="text-xl font-bold mt-2">
-      {loading ? "Loading..." : "Ready"}
-    </p>
-  </div>
-</div>
+            <div>
+              <h1 className="text-4xl font-bold">
+                Dashboard
+              </h1>
 
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg p-3 mb-6 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-        {loading && <Loader />}
-
-        {error && <Toast message={error} />}
-
-        {!loading && filteredProducts.length === 0 && (
-        <div className="flex flex-col items-center justify-center py-16 border rounded-xl bg-gray-50 shadow-sm">
-  <div className="text-6xl mb-4">📦</div>
-
-  <h2 className="text-2xl font-bold text-gray-700 mb-2">
-    No Products Yet
-  </h2>
-
-  <p className="text-gray-500 text-center max-w-md">
-    Create your first AI-generated product description using the AI Feature page.
-  </p>
-</div>
-        )}
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProducts.map((product) => (
-            <div
-              key={product._id}
-             className={`border rounded-xl p-5 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
-  darkMode
-    ? "bg-gray-800 text-white"
-    : "bg-white text-black"
-}`}
-            >
-              <h2 className="text-xl font-bold mb-3">
-                {product.productName}
-              </h2>
-
-              <p>
-                <strong>Ingredients:</strong> {product.ingredients}
-              </p>
-
-              <p>
-                <strong>Weight:</strong> {product.weight}
-              </p>
-
-              <p>
-                <strong>Tone:</strong> {product.tone}
-              </p>
-
-              <p className="mt-3">
-                <strong>Description:</strong>
-              </p>
-
-              <p className="text-sm mt-2">
-                {product.description}
+              <p className="text-gray-500 mt-2">
+                Monitor your AI generated product descriptions.
               </p>
             </div>
-          ))}
+
+            <div className="flex gap-3 mt-5 lg:mt-0">
+
+              <Link
+                to="/aifeature"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl flex items-center gap-2"
+              >
+                <PlusCircle size={18} />
+                Generate Product
+              </Link>
+
+              <Link
+                to="/listview"
+                className="border px-5 py-3 rounded-xl hover:bg-gray-100 flex items-center gap-2"
+              >
+                <List size={18} />
+                Saved Products
+              </Link>
+
+            </div>
+
+          </div>
+
+          {/* Stats */}
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            {cards.map((card) => {
+
+              const Icon = card.icon;
+
+              return (
+                <div
+                  key={card.title}
+                  className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6"
+                >
+
+                  <div
+                    className={`${card.color} w-14 h-14 rounded-xl flex items-center justify-center text-white mb-5`}
+                  >
+                    <Icon size={28} />
+                  </div>
+
+                  <h3 className="text-gray-500">
+                    {card.title}
+                  </h3>
+
+                  <p className="text-4xl font-bold mt-3">
+                    {card.value}
+                  </p>
+
+                </div>
+              );
+
+            })}
+
+          </div>
+
+          {/* Recent Products */}
+
+          <div className="mt-10 bg-white rounded-2xl shadow-md">
+
+            <div className="flex justify-between items-center border-b p-6">
+
+              <h2 className="text-2xl font-bold">
+                Recent Products
+              </h2>
+
+              <Link
+                to="/listview"
+                className="text-indigo-600 flex items-center gap-2"
+              >
+                View All
+                <ArrowRight size={18} />
+              </Link>
+
+            </div>
+
+            {loading ? (
+
+              <div className="flex justify-center py-12">
+
+                <Loader2
+                  className="animate-spin text-indigo-600"
+                  size={40}
+                />
+
+              </div>
+
+            ) : products.length === 0 ? (
+
+              <div className="text-center py-16">
+
+                <Package
+                  className="mx-auto text-gray-300"
+                  size={55}
+                />
+
+                <h3 className="text-xl font-semibold mt-4">
+                  No Products Yet
+                </h3>
+
+                <p className="text-gray-500 mt-2">
+                  Generate your first AI product description.
+                </p>
+
+              </div>
+
+            ) : (
+
+              <div className="divide-y">
+
+                {products
+                  .slice()
+                  .reverse()
+                  .slice(0, 5)
+                  .map((product) => (
+
+                    <div
+                      key={product._id}
+                      className="flex justify-between items-center p-5 hover:bg-gray-50"
+                    >
+
+                      <div>
+
+                        <h3 className="font-semibold text-lg">
+                          {product.productName}
+                        </h3>
+
+                        <p className="text-gray-500">
+                          {product.tone}
+                        </p>
+
+                      </div>
+
+                      <span className="text-sm text-gray-400">
+                        {new Date(
+                          product.createdAt
+                        ).toLocaleDateString()}
+                      </span>
+
+                    </div>
+
+                  ))}
+
+              </div>
+
+            )}
+
+          </div>
+
         </div>
+
       </main>
 
       <Footer />

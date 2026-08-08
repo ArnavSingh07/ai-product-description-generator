@@ -9,9 +9,11 @@ dotenv.config();
 const connectDB = require("./config/db");
 require("./config/passport");
 
+// Routes
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const uploadRoutes = require("./routes/uploadRoutes"); // ✅ NEW
 
 const app = express();
 
@@ -50,10 +52,36 @@ app.get("/", (req, res) => {
   });
 });
 
-// Routes
+// ==================== API Routes ====================
+
 app.use("/api/products", productRoutes);
+
 app.use("/api/auth", authRoutes);
+
 app.use("/api/ai", aiRoutes);
+
+// ✅ Image Upload Route
+app.use("/api/upload", uploadRoutes);
+
+// ====================================================
+
+// 404 Handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "API Route Not Found",
+  });
+});
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error(err);
+
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
 
 // Start Server
 const PORT = process.env.PORT || 5000;

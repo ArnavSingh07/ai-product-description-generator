@@ -7,19 +7,48 @@ const productSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     ingredients: {
       type: String,
       required: true,
     },
+
     weight: {
       type: String,
       required: true,
     },
+
     tone: {
       type: String,
       required: true,
     },
+
+    title: {
+      type: String,
+      default: "",
+    },
+
     description: {
+      type: String,
+      default: "",
+    },
+
+    features: {
+      type: [String],
+      default: [],
+    },
+
+    seoKeywords: {
+      type: [String],
+      default: [],
+    },
+
+    metaDescription: {
+      type: String,
+      default: "",
+    },
+
+    marketingCaption: {
       type: String,
       default: "",
     },
